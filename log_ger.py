@@ -42,6 +42,3 @@ def get_logger(logger_name):
 
 #my_logger = get_logger(__name__ + "Logger")
 #my_logger.debug("---------a debug message")
-
-
-
