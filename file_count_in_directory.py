@@ -31,6 +31,6 @@ for i in dir_list:
 				if m_day in dir_count[i][z]:
 					dir_count[i][z][1] = dir_count[i][z][1] + 1 
 
-
+max_len=len(max(dir_count.keys(), key=len))
 for i in dir_count:
-	print ('%s  %s' % (i, dir_count[i]))
+	print ('%-0*s  %s' % (max_len+2, i, dir_count[i]))
