@@ -38,9 +38,6 @@ def get_logger(logger_name=sys.argv[0][2:-3], console=True, file=False, log_file
         return logger
 
 
-#my_logger = get_logger(__name__ + "Logger")
-#my_logger.debug("---------a debug message")
-
 ##########
 # to use as module:
 #import log_ger
