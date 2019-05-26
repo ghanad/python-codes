@@ -14,15 +14,6 @@ src_dir = '/home/ali/test/'
 dir_filter=sys.argv[1]
 
 
-
-dir_list=[]
-for i in os.listdir(src_dir):
-	if os.path.isdir(src_dir+i) and dir_filter in i:
-		dir_list.append(src_dir+i+'/')
-
-max_len= len(max(dir_list))
-
-
 class counter:
 	def __init__(self):
 		pass
@@ -47,8 +38,12 @@ class counter:
 			print ('%0-*s  %s\t%s' % (max_len, self.dpath, i, ab))
 
 if __name__ == '__main__':
-	
+	dir_list=[]
+	for i in os.listdir(src_dir):
+		if os.path.isdir(src_dir+i) and dir_filter in i:
+			dir_list.append(src_dir+i+'/')
 
+	max_len= len(max(dir_list))	
 	thread_list = list()
 	obj_list = []
 	
