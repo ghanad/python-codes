@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+
+#version 1.2
+
 import os
 from datetime import datetime
 import time
