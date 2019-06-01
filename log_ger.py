@@ -22,9 +22,11 @@ def get_file_handler(log_file):
         return file_handler
 
 
-def get_logger(logger_name=sys.argv[0][2:-3], console=True, file=False, log_file=sys.argv[0][2:-3]+'_report.txt'):
+def get_logger(level = 'INFO' ,logger_name=sys.argv[0][2:-3], console=True, file=False, log_file=sys.argv[0][2:-3]+'_report.txt'):
         logger = logging.getLogger(logger_name)
-        logger.setLevel(logging.DEBUG)
+
+        #set log level 
+        logger.setLevel(level.upper())
 
         # to print logs on console
         if console == True:
