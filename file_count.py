@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 # version 1.5
+# author: Ghanad
 
 import os
 from datetime import datetime
