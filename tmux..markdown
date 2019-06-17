@@ -1,2 +1,2 @@
 Create new session with name:
-  `tmux new -s MySession`
+  tmux new -s MySession
