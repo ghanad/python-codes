@@ -5,4 +5,4 @@ Create new session with name:
     
 attach to session with name:
 
-    `tmux a -t MySession`
+    tmux a -t MySession
