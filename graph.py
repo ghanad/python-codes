@@ -58,7 +58,7 @@ while True:
 			for z in range(max_num(k_diff) - 3 , max_num(k_diff) + 3):
 				if str(z) in j:
 					if  int(dir2[j]) < file_sum*1.1 or int(dir2[j]*0.9) < file_sum :
-						#print("J size:%d  file_sum:%d\t0.9dir:%d\t1.1fs:%d" %(dir2[j] , file_sum, dir2[j]*0.9 , file_sum*1.1))
-						print(j)
+						logger.info("Near file:%s\tdiff:%f"  %(j , dir2[j]/file_sum))
+						#logger.info("Near file:%s\tsize:%s\t\tfiles removed size:%s"  %(j , human_size(dir2[j]), human_size(file_sum)))
 
 		logger.info('---------')
