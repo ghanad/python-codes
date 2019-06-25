@@ -1,39 +1,64 @@
 #!/usr/bin/python3
 import os
 import time
+import log_ger
+import fnmatch
 
 
 path1 = "C:\\12"
+sleep_time = 1
+file_filter = '*Data*'
+
+logger = log_ger.get_logger(console=True, file=False)
+
+def human_size(bytes, units=[' bytes','KB','MB','GB','TB', 'PB', 'EB']):
+    return str(bytes) + units[0] if bytes < 1024 else human_size(bytes>>10, units[1:])
+
+def max_num(list_name):
+	max = 0
+	for i in list_name:
+		try:
+			f_num =  int(i.split("-")[1])
+		except:
+			pass
+		if f_num > max:
+			max = f_num
+	return max
 
 while True:
 	dir1 = {}
-	for i in os.listdir(path1):
+	for i in fnmatch.filter(os.listdir(path1), file_filter):
 		j = os.path.join(path1, i)
 		size1 = os.path.getsize(j)
 		dir1.update({i: size1})
 
-	time.sleep(2)
+	time.sleep(sleep_time)
 
 	dir2 = {}
-	for i in os.listdir(path1):
+	for i in fnmatch.filter(os.listdir(path1), file_filter):
 		j = os.path.join(path1, i)
 		size2 = os.path.getsize(j)
 		dir2.update({i: size2})
 
-	# change file size	
-	for key1 , value1 in dir1.items():
-		for key2 , value2 in dir2.items():
-			if key1 == key2:
-				if value1 != value2:
-					print('file:%s\told:%s\tnew:%s' %( key1 , value1 , value2 ) )
+	
+	kdir1 = dir1.keys()
+	kdir2 = dir2.keys()	
+
+	k_diff = list(set(kdir1) - set(kdir2))
 
 
-	n1 = list(dir1.keys())
-	n2 = list(dir2.keys())
-	if len(n1) != len(n2):
-		# Remove file 
-		print(list(set(n1) - set(n2)))
+	file_sum = 0
+	if k_diff:
+		for i in k_diff:
+			logger.info("file:%s\tsize:%s" %(i , human_size(dir1[i])))
+			file_sum = dir1[i] + file_sum
 
-	if len(n2) != len(n1):
-		# add
-		print(list(set(n2) - set(n1)))
+		## find near files
+		for j in kdir2:
+			for z in range(max_num(k_diff) - 3 , max_num(k_diff) + 3):
+				if str(z) in j:
+					if  int(dir2[j]) < file_sum*1.1 or int(dir2[j]*0.9) < file_sum :
+						#print("J size:%d  file_sum:%d\t0.9dir:%d\t1.1fs:%d" %(dir2[j] , file_sum, dir2[j]*0.9 , file_sum*1.1))
+						print(j)
+
+		logger.info('---------')
