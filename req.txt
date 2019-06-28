@@ -1,0 +1,12 @@
+asn1crypto
+bcrypt
+cffi
+cryptography
+gevent
+greenlet
+parallel_ssh
+paramiko
+pycparser
+PyNaCl
+six
+ssh2_python
