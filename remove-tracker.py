@@ -54,4 +54,8 @@ while True:
             logger.info("file:%s\tsize:%s" % (i, human_size(dir1[i])))
             file_sum = dir1[i] + file_sum
 
+        for key, value in dir2.items():
+            if value in range(int(0.95*file_sum), int(1.05*file_sum)):
+                logger.info('#### file:%s \t size:%s \t Removed file sum:%s'%(key, value, file_sum))
+
         logger.info('---------')
