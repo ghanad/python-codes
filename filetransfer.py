@@ -7,7 +7,6 @@ import paramiko
 logger = logging.getLogger(__name__)
 
 
-
 def file_recv(ip, username, password, src_file, dst_file, port):
     logger.info('Start file recive function.')
 
