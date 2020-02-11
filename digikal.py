@@ -4,11 +4,7 @@ import bs4 as bs
 import lxml
 import concurrent.futures 
 
-source1 = 'dkp-1479322'
-source2 = 'dkp-891419'
-source3 = 'dkp-184483'
-
-
+urlCodeList = ['dkp-2183900','dkp-2084488','dkp-2189848','dkp-2409947','dkp-781658','dkp-856935']
     
 def getPrice(urlCode):
     source_url = 'https://www.digikala.com/product/{}'.format(urlCode)
@@ -24,11 +20,7 @@ def getPrice(urlCode):
         disc = ((originalPrice - sellPrice) / originalPrice)*100
         return source_url, sellPrice , originalPrice , disc
 
-    
-urlCodeList = ['dkp-1479322','dkp-891419','dkp-184483']
 
-def testfunction(test):
-    print(test)
 
 if __name__ == '__main__':
     with concurrent.futures.ProcessPoolExecutor() as executor:
