@@ -2,13 +2,25 @@ from configparser import ConfigParser
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor 
 import os
+import logging
 
 
 TOKEN_FILE = 'tokens.ini'
 INI_GROUP_NAME = 'tokens'
+LOG_FILE_NAME = 'info.log'
+TOKEN_NUMBER = 100000
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler_streamer = logging.FileHandler('logfile.log')
+# Console_handler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+handler_streamer.setFormatter(formatter)
+logger.addHandler(handler_streamer)
+
 
 class Tokens:
-    def __init__(self, tokenNumber, tokenFile=TOKEN_FILE, GroupName=INI_GROUP_NAME):
+    def __init__(self, tokenNumber=None, tokenFile=None, GroupName=None):
         self.tokenFile = tokenFile
         self.GroupName = GroupName
         self.tokenNumber = tokenNumber
@@ -19,14 +31,14 @@ class Tokens:
             if user_answer == 'Y' or user_answer == 'y':
                 return self.loadINIfile()
             else:
+                logger.info('Remove old {} file'.format(self.tokenFile))
                 os.remove(self.tokenFile)
-                for k,v in self.tokenCreator().items():
-                    self.saveToINI(k,v)
-                # print(self.tokenCreator())
+                tDict = self.tokenCreator()
+                self.saveToINI(tDict)
                 return self.tokenCreator()
         else:
-            for k,v in self.tokenCreator().items():
-                    self.saveToINI(k,v)
+            tDict = self.tokenCreator()
+            self.saveToINI(tDict)
             return self.tokenCreator()
 
     def tokenCreator(self):
@@ -39,7 +51,6 @@ class Tokens:
             endRange = startRange + rangeSize
             if i == (self.tokenNumber - 1):
                 endRange = end
-            # rangeList.append('{},{},{}'.format(startRange, endRange,num))
             rangeList['{},{},{}'.format(num, startRange, endRange)] = 'None'
             startRange = endRange  
         return rangeList
@@ -49,26 +60,45 @@ class Tokens:
         config.read(self.tokenFile)
         return {k:v for k,v in config.items(self.GroupName)}
 
-    def saveToINI(self, token, status):
+    def saveToINI(self, token, status='None'):
+        if isinstance(token, (int, str)):
+            token_dict = dict()
+            token_dict[token] = status
+            self._saveHelper(token_dict)        
+        elif isinstance(token, dict):
+            self._saveHelper(token)
+        elif isinstance(token, list):
+            token_dict = dict()
+            token_dict = {k:'None' for k in token}
+            self._saveHelper(token_dict)
+
+    def _saveHelper(self, tokenDictionary):
         config = ConfigParser()
         config.read(self.tokenFile)
         if not config.has_section(self.GroupName):
             config.add_section(self.GroupName)
-        config.set(self.GroupName, token, status)
-        with open(self.tokenFile, 'w') as configfile:
-            config.write(configfile)
+        for key,value in tokenDictionary.items():
+            config.set(self.GroupName, key, value)
+            logger.info('token_{} status= {} saved to file'.format(key, value))
+        try:
+            with open(self.tokenFile, 'w') as configfile:
+                config.write(configfile)
+            
+        except Exception as err:
+            logger.error('could not save token to file. {}'.format( err ))
 
-# a = Tokens(100)
-# tokensDict = a.checkFileExist()
 
-def testfunction(a):
-    print('{}   {}'.format(os.getpid(), a))
 
+class query:
+    pass
+
+def worker():
+    pass
 
 
 if __name__ == "__main__":
-    a = Tokens(100)
+    a = Tokens(TOKEN_NUMBER, TOKEN_FILE, INI_GROUP_NAME)
     tokensDict = a.checkFileExist()
-    noneTokenList = [x for x in tokensDict.keys()  if tokensDict[x] != 'Success']
-    with ProcessPoolExecutor(max_workers=10) as executor:
-        executor.map(testfunction, noneTokenList)
+#     noneTokenList = [x for x in tokensDict.keys()  if tokensDict[x] != 'Success']
+#     with ProcessPoolExecutor(max_workers=10) as executor:
+#         executor.map(worker, noneTokenList)
