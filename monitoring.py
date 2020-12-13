@@ -33,6 +33,10 @@ class SnmpUtil:
         
         return [[ifName_value[x], ifHCInOctets_value[x], ifHCOutOctets_value[x]] for x in range(len(ifHCOutOctets_value))]
 
+    def cpu(self):
+        s1 = self.con.get('.1.3.6.1.4.1.2021.10.1.3.1')
+        s2 = self.con.get('.1.3.6.1.4.1.2021.11.9.0')
+        return [s1, s2]
 
 class DataBase:
     def __init__(self, table='monitoring', dfName='monitoring.db'):
@@ -84,4 +88,5 @@ net = SnmpUtil('127.0.0.1').network('eth0')
 a = DataBase()
 # a.create_table()
 # a.insert('10.0.0.2', net)
-a.fetch()
+# a.fetch()
+SnmpUtil('127.0.0.1').cpu()
