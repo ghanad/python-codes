@@ -37,6 +37,11 @@ class Stats:
             writer.writerows(lst)
 
     def inserte_row(self, **items):
+        '''
+        Example:
+        a = Stats()
+        a.inserte_row(name='ali', age='reza')
+        '''
         header = self.get_headers()
         self._save([items], header, mode='a')
             
@@ -44,6 +49,9 @@ class Stats:
         pass
 
     def get_column(self, col):
+        '''
+        return list of all item for given column
+        '''
         tmp_list = list()
         with open(self.fileName, 'r') as c:
             csv_read = csv.DictReader(c)
