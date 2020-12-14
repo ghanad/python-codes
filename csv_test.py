@@ -44,8 +44,13 @@ class Stats:
         pass
 
     def get_column(self, col):
-        pass
+        tmp_list = list()
+        with open(self.fileName, 'r') as c:
+            csv_read = csv.DictReader(c)
+            for i in csv_read:
+                tmp_list.append(i[col])
+        return [x for x in tmp_list if x]
 
 a = Stats()
-a.inserte_row(name='ali3', table='nemp')
+# a.inserte_row(name='ali3', table='nemp')
 # b = a.update(name='ali', table='test20')
