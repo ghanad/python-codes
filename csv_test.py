@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import csv
+import os
 
 
 class Stats:
@@ -13,6 +14,7 @@ class Stats:
             return i
 
     def update(self, **column):
+        self._check_file_exist()
         # open file
         csv_obj = open(self.fileName)
         csv_read = csv.DictReader(csv_obj)
@@ -47,6 +49,10 @@ class Stats:
             
     def insert_many(slef, dict_list):
         pass
+
+    def _check_file_exist(self):
+        if not os.path.exists(self.fileName):
+            raise FileNotFoundError
 
     def get_column(self, col):
         '''
